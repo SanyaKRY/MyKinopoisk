@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mainScreenFragment"
+        android:icon="@drawable/famous_icon_selector"
+        android:title="Famous" />
+    <item
+        android:id="@+id/favouriteFilmScreenFragment"
+        android:icon="@drawable/favorite_icon_selector"
+        android:title="Favorite" />
+</menu>
