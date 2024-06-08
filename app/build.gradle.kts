@@ -19,6 +19,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "X_API_KEY", "\"c718644b-3162-432f-a8a3-00279f65cc01\"")
     }
 
     buildTypes {
@@ -40,6 +42,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -58,6 +61,12 @@ dependencies {
 
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    implementation(libs.moshi.moshi)
+    kapt(libs.moshi.kotlin.codegen)
+
+    implementation(libs.retrofit2.retrofit)
+    implementation(libs.retrofit2.converter)
 }
 
 kapt {
