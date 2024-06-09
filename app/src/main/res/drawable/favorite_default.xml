@@ -17,13 +17,13 @@
       android:strokeLineJoin="round"
       android:strokeWidth="2"
       android:fillColor="@android:color/transparent"
-      android:strokeColor="@color/black"
+      android:strokeColor="@color/bottom_title"
       android:strokeLineCap="round"/>
   <path
       android:pathData="M22,10.044c0.784,0.113 1.497,0.443 2.052,0.956C24.663,11.565 25,12.293 25,13.048"
       android:strokeLineJoin="round"
       android:strokeWidth="2"
       android:fillColor="@android:color/transparent"
-      android:strokeColor="@color/black"
+      android:strokeColor="@color/bottom_title"
       android:strokeLineCap="round"/>
 </vector>

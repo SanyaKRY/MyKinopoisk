@@ -20,6 +20,6 @@
       android:strokeLineJoin="round"
       android:strokeWidth="2"
       android:fillColor="@android:color/transparent"
-      android:strokeColor="@color/black"
+      android:strokeColor="@color/bottom_title"
       android:strokeLineCap="round"/>
 </vector>
