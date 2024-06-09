@@ -1,10 +1,18 @@
 package com.my.kinopoisk.features.mainscreen.presenter.vm
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.my.kinopoisk.features.mainscreen.domain.model.FilmDomain
 import com.my.kinopoisk.features.mainscreen.domain.usecase.GetListOfFilmsUseCase
+import com.my.kinopoisk.features.mainscreen.presenter.mapper.FilmDomainToUiMapper
 import com.my.kinopoisk.features.mainscreen.presenter.model.MainScreenState
+import com.my.kinopoisk.util.extensions.runCatchingNonCancellation
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MainScreenViewModel @Inject constructor(
@@ -16,4 +24,25 @@ class MainScreenViewModel @Inject constructor(
     val stateFlow: Flow<MainScreenState>
         get() = _stateFlow
 
+    init {
+        getListOfFilms()
+    }
+
+    private fun getListOfFilms() {
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(2_000)
+
+            val screenState = runCatchingNonCancellation {
+                getListOfFilmsUseCase.execute()
+            }.onSuccess {
+                MainScreenState.Dataloaded(FilmDomainToUiMapper.map(it))
+            }.onFailure {
+                MainScreenState.Error
+            }
+
+            withContext(Dispatchers.Main) {
+
+            }
+        }
+    }
 }
