@@ -64,6 +64,10 @@ dependencies {
 
     implementation(libs.retrofit2.retrofit)
     implementation(libs.retrofit2.converter)
+
+    implementation(libs.glide)
+
+    implementation(libs.androidx.recyclerview)
 }
 
 kapt {

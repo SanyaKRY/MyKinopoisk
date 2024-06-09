@@ -15,6 +15,8 @@ navigation-fragment-ktx = "2.7.7"
 navigation-ui-ktx = "2.7.7"
 moshi = "1.15.1"
 retrofit = "2.11.0"
+glide="4.16.0"
+recyclerview = "1.3.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,6 +33,8 @@ moshi-moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit2-converter = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview"  }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
