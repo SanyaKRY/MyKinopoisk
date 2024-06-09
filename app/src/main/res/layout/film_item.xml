@@ -21,7 +21,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:shapeAppearanceOverlay="@style/RoundedSquare"
+            android:adjustViewBounds="true"
             tools:src="@drawable/default_image" />
+        <!-- Атрибут android:adjustViewBounds="true" в элементе ImageView
+         в файле разметки Android указывает на то, что ImageView
+         должен быть регулируемого размера, для поддержания соотношения
+          сторон оригинального изображения.-->
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
