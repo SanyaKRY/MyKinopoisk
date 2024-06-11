@@ -68,6 +68,9 @@ dependencies {
     implementation(libs.glide)
 
     implementation(libs.androidx.recyclerview)
+
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
 }
 
 kapt {
