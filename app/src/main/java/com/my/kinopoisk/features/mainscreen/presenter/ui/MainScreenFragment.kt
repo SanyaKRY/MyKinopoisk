@@ -55,7 +55,7 @@ class MainScreenFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-        filmAdapter = FilmAdapter()
+        filmAdapter = FilmAdapter(insertDeleteFilmListener)
         recyclerView = binding.recyclerView
         recyclerView.apply {
             adapter = filmAdapter
