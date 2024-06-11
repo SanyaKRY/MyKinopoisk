@@ -2,8 +2,12 @@ package com.my.kinopoisk.features.mainscreen.presenter.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.my.kinopoisk.features.mainscreen.domain.usecase.AddToFilmFavoriteUseCase
 import com.my.kinopoisk.features.mainscreen.domain.usecase.GetListOfFilmsUseCase
+import com.my.kinopoisk.features.mainscreen.domain.usecase.RemoveFromFilmFavoriteUseCase
 import com.my.kinopoisk.features.mainscreen.presenter.mapper.FilmDomainToUiMapper
+import com.my.kinopoisk.features.mainscreen.presenter.mapper.FilmUiToDomainMapper
+import com.my.kinopoisk.features.mainscreen.presenter.model.FilmUi
 import com.my.kinopoisk.features.mainscreen.presenter.model.MainScreenState
 import com.my.kinopoisk.util.extensions.runCatchingNonCancellation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +21,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
-    private val getListOfFilmsUseCase: GetListOfFilmsUseCase
+    private val getListOfFilmsUseCase: GetListOfFilmsUseCase,
+    private val addToFilmFavoriteUseCase: AddToFilmFavoriteUseCase,
+    private val removeFromFilmFavoriteUseCase: RemoveFromFilmFavoriteUseCase
 ) : ViewModel() {
 
     private val _stateFlow: MutableStateFlow<MainScreenState> =
@@ -29,10 +35,25 @@ class MainScreenViewModel @Inject constructor(
         getListOfFilms()
     }
 
+    fun addToFavoriteFilm(film: FilmUi) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val addToFavoriteFilm = addToFilmFavoriteUseCase.execute(FilmUiToDomainMapper.map(film))
+            withContext(Dispatchers.Main) {
+            }
+        }
+    }
+
+    fun removeFromFavoriteFilm(film: FilmUi) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val removeFromFavoriteFilm = removeFromFilmFavoriteUseCase.execute(FilmUiToDomainMapper.map(film))
+            withContext(Dispatchers.Main) {
+            }
+        }
+    }
+
     private fun getListOfFilms() {
         viewModelScope.launch(Dispatchers.IO) {
             delay(2_000)
-
             val screenState: MainScreenState = runCatchingNonCancellation {
                 getListOfFilmsUseCase.execute()
             }.fold(
@@ -43,15 +64,6 @@ class MainScreenViewModel @Inject constructor(
                     MainScreenState.Error
                 }
             )
-
-//            val screenState: Result<List<FilmDomain>> = runCatchingNonCancellation {
-//                getListOfFilmsUseCase.execute()
-//            }.onSuccess {
-//                MainScreenState.Dataloaded(FilmDomainToUiMapper.map(it))
-//            }.onFailure {
-//                MainScreenState.Error
-//            }
-
             withContext(Dispatchers.Main) {
                 _stateFlow.value = screenState
             }

@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.my.kinopoisk.databinding.FragmentMainScreenBinding
+import com.my.kinopoisk.features.mainscreen.presenter.model.FilmUi
 import com.my.kinopoisk.features.mainscreen.presenter.model.MainScreenState
 import com.my.kinopoisk.features.mainscreen.presenter.ui.recyclerview.FilmAdapter
 import com.my.kinopoisk.features.mainscreen.presenter.vm.MainScreenViewModel
@@ -28,6 +29,16 @@ class MainScreenFragment : Fragment() {
 
     private lateinit var filmAdapter: FilmAdapter
     private lateinit var recyclerView: RecyclerView
+
+    private val insertDeleteFilmListener: (
+        filmUi: FilmUi
+    ) -> Unit = { filmUi ->
+        if (filmUi.isSavedToDataBase) {
+            viewModel.removeFromFavoriteFilm(filmUi)
+        } else {
+            viewModel.addToFavoriteFilm(filmUi)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

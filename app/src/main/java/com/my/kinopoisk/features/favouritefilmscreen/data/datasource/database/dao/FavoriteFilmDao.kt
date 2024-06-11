@@ -12,6 +12,9 @@ interface FavoriteFilmDao {
     @Insert
     suspend fun insertFavoriteFilm(film: FavoriteFilmTable): Long
 
+    @Query("DELETE FROM favorite_film_table WHERE filmId = :filmId")
+    suspend fun deleteFavoriteFilmByFilmId(filmId: Int): Int
+
     @Query("SELECT * FROM favorite_film_table")
     fun getAllFavoriteFilmFlow(): Flow<List<FavoriteFilmTable>>
 }

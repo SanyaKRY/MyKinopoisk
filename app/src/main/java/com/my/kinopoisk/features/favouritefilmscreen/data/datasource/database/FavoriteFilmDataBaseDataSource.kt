@@ -13,6 +13,10 @@ class FavoriteFilmDataBaseDataSource @Inject constructor(
         return favoriteFilmDao.insertFavoriteFilm(film)
     }
 
+    suspend fun deleteFavoriteFilm(film: FavoriteFilmTable): Any {
+        return favoriteFilmDao.deleteFavoriteFilmByFilmId(film.filmId)
+    }
+
     fun getAllFavoriteFilmFlow(): Flow<List<FavoriteFilmTable>> {
         return favoriteFilmDao.getAllFavoriteFilmFlow()
     }

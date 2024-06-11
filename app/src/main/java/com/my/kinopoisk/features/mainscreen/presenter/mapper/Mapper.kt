@@ -19,3 +19,18 @@ object FilmDomainToUiMapper {
         }
     }
 }
+
+object FilmUiToDomainMapper {
+    fun map(type: FilmUi): FilmDomain {
+        return FilmDomain(
+            filmId = type.filmId,
+            year = type.year,
+            nameRu = type.nameRu,
+            posterUrl = type.posterUrlPreview,
+            posterUrlPreview = type.posterUrlPreview,
+            genres = type.genres,
+            countries = type.countries,
+            isSavedToDataBase = type.isSavedToDataBase
+        )
+    }
+}
