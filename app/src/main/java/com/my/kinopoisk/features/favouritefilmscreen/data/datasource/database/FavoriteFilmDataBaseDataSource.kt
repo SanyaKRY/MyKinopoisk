@@ -9,6 +9,10 @@ class FavoriteFilmDataBaseDataSource @Inject constructor(
     private val favoriteFilmDao: FavoriteFilmDao
 ) {
 
+    suspend fun insertFavoriteFilm(film: FavoriteFilmTable): Any {
+        return favoriteFilmDao.insertFavoriteFilm(film)
+    }
+
     fun getAllFavoriteFilmFlow(): Flow<List<FavoriteFilmTable>> {
         return favoriteFilmDao.getAllFavoriteFilmFlow()
     }
