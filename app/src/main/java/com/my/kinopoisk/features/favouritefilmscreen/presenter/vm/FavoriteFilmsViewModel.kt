@@ -1,11 +1,13 @@
 package com.my.kinopoisk.features.favouritefilmscreen.presenter.vm
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.my.kinopoisk.features.favouritefilmscreen.presenter.model.FavoriteScreenState
 import com.my.kinopoisk.features.favouritefilmscreen.domain.usecase.GetFavoriteFilmsUseCase
 import com.my.kinopoisk.features.favouritefilmscreen.presenter.mapper.FavoriteFilmsDomainToUiMapper
 import com.my.kinopoisk.features.favouritefilmscreen.presenter.model.FavoriteFilmUi
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@HiltViewModel
 class FavoriteFilmsViewModel @Inject constructor(
     private val getFavoriteFilmsUseCase: GetFavoriteFilmsUseCase
 ) : ViewModel() {
@@ -30,7 +33,6 @@ class FavoriteFilmsViewModel @Inject constructor(
     private fun getListOfFilms() {
         viewModelScope.launch(Dispatchers.IO) {
             delay(1_000)
-
             val flow = getFavoriteFilmsUseCase.execute()
             withContext(Dispatchers.Main) {
                 flow.collect {

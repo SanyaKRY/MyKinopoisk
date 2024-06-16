@@ -1,5 +1,7 @@
 package com.my.kinopoisk.di
 
+import com.my.kinopoisk.features.favouritefilmscreen.data.repository.FavoriteFilmsScreenRepositoryImpl
+import com.my.kinopoisk.features.favouritefilmscreen.domain.FavoriteFilmsScreenRepository
 import com.my.kinopoisk.features.mainscreen.data.repository.MainScreenRepositoryImpl
 import com.my.kinopoisk.features.mainscreen.domain.repository.MainScreenRepository
 import dagger.Binds
@@ -18,4 +20,9 @@ abstract class RepositoryModule {
         mainScreenRepositoryImpl: MainScreenRepositoryImpl
     ): MainScreenRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindFavoriteFilmsScreenRepository(
+        favoriteFilmsScreenRepositoryImpl: FavoriteFilmsScreenRepositoryImpl
+    ): FavoriteFilmsScreenRepository
 }
