@@ -8,7 +8,7 @@ class SearchFilmUseCase @Inject constructor(
     private val mainScreenRepository: MainScreenRepository
 ) {
 
-    fun execute(searchQuery: String): List<FilmDomain> {
-        return mainScreenRepository
+    suspend fun execute(searchQuery: String): List<FilmDomain> {
+        return mainScreenRepository.searchFilm(searchQuery)
     }
 }

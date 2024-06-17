@@ -9,4 +9,6 @@ interface MainScreenRepository {
     suspend fun addToFavoriteFilm(film: FilmDomain): Any
 
     suspend fun removeFromFavoriteFilm(film: FilmDomain): Any
+
+    suspend fun searchFilm(searchQuery: String): List<FilmDomain>
 }

@@ -24,4 +24,8 @@ class MainScreenRepositoryImpl @Inject constructor(
     override suspend fun removeFromFavoriteFilm(film: FilmDomain): Any {
         return favoriteFilmDataBaseDataSource.deleteFavoriteFilm(FilmDomainToDataBaseMapper.map(film))
     }
+
+    override suspend fun searchFilm(searchQuery: String): List<FilmDomain> {
+        return FilmApiToDomainMapper.map(filmsNetworkDataSource.searchFilmByKey(searchQuery).films)
+    }
 }
