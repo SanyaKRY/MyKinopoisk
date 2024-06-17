@@ -2,6 +2,9 @@ package com.my.kinopoisk.features.mainscreen.presenter.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.my.kinopoisk.features.favouritefilmscreen.presenter.mapper.FavoriteFilmsDomainToUiMapper
+import com.my.kinopoisk.features.favouritefilmscreen.presenter.model.FavoriteFilmUi
+import com.my.kinopoisk.features.favouritefilmscreen.presenter.model.FavoriteScreenState
 import com.my.kinopoisk.features.mainscreen.domain.usecase.AddToFilmFavoriteUseCase
 import com.my.kinopoisk.features.mainscreen.domain.usecase.GetListOfFilmsUseCase
 import com.my.kinopoisk.features.mainscreen.domain.usecase.RemoveFromFilmFavoriteUseCase
@@ -55,7 +58,23 @@ class MainScreenViewModel @Inject constructor(
 
 
     fun searchFilm(searchQuery: String) {
-
+        viewModelScope.launch(Dispatchers.IO) {
+            _stateFlow.value = MainScreenState.Loading
+            delay(1_000)
+            val screenState: MainScreenState = runCatchingNonCancellation {
+                searchFilmUseCase.execute(searchQuery)
+            }.fold(
+                onSuccess = {
+                    MainScreenState.Dataloaded(FilmDomainToUiMapper.map(it))
+                },
+                onFailure = {
+                    MainScreenState.Error
+                }
+            )
+            withContext(Dispatchers.Main) {
+                _stateFlow.value = screenState
+            }
+        }
     }
 
     private fun getListOfFilms() {
