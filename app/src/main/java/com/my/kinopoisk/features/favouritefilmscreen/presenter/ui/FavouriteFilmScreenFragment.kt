@@ -87,7 +87,7 @@ class FavouriteFilmScreenFragment : Fragment() {
 
     fun searchFavoriteFilm(query: String) {
         val searchQuery = "%$query%"
-        Log.d("dfsdfsdf","AAA: $searchQuery")
+        viewModel.searchFilm(searchQuery)
     }
 
     private fun setUpRecyclerView() {

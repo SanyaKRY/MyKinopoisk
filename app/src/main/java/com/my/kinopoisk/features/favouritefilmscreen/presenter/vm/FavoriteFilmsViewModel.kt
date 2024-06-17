@@ -1,6 +1,5 @@
 package com.my.kinopoisk.features.favouritefilmscreen.presenter.vm
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.my.kinopoisk.features.favouritefilmscreen.presenter.model.FavoriteScreenState
@@ -28,6 +27,10 @@ class FavoriteFilmsViewModel @Inject constructor(
 
     init {
         getListOfFilms()
+    }
+
+    fun searchFilm(searchQuery: String) {
+
     }
 
     private fun getListOfFilms() {

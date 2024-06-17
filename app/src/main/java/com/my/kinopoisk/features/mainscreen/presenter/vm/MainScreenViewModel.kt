@@ -51,6 +51,11 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
+
+    fun searchFilm(searchQuery: String) {
+
+    }
+
     private fun getListOfFilms() {
         viewModelScope.launch(Dispatchers.IO) {
             delay(2_000)

@@ -98,7 +98,7 @@ class MainScreenFragment : Fragment() {
 
     fun searchFilm(query: String) {
         val searchQuery = "%$query%"
-        Log.d("dfsdfsdf","AAA: $searchQuery")
+        viewModel.searchFilm(searchQuery)
     }
 
     private fun setUpRecyclerView() {
