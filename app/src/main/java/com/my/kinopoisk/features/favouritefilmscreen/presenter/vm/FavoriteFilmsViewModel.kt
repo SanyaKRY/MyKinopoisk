@@ -33,6 +33,7 @@ class FavoriteFilmsViewModel @Inject constructor(
 
     fun searchFilm(searchQuery: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            _stateFlow.value = FavoriteScreenState.Loading
             delay(1_000)
             val flow = searchFavoriteFilmUseCase.execute(searchQuery)
             withContext(Dispatchers.Main) {
