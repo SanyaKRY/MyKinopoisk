@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.my.kinopoisk.features.favouritefilmscreen.presenter.model.FavoriteScreenState
 import com.my.kinopoisk.features.favouritefilmscreen.domain.usecase.GetFavoriteFilmsUseCase
+import com.my.kinopoisk.features.favouritefilmscreen.domain.usecase.SearchFavoriteFilmUseCase
 import com.my.kinopoisk.features.favouritefilmscreen.presenter.mapper.FavoriteFilmsDomainToUiMapper
 import com.my.kinopoisk.features.favouritefilmscreen.presenter.model.FavoriteFilmUi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteFilmsViewModel @Inject constructor(
-    private val getFavoriteFilmsUseCase: GetFavoriteFilmsUseCase
+    private val getFavoriteFilmsUseCase: GetFavoriteFilmsUseCase,
+    private val searchFavoriteFilmUseCase: SearchFavoriteFilmUseCase
 ) : ViewModel() {
 
     private val _stateFlow: MutableStateFlow<FavoriteScreenState> =
@@ -30,7 +32,16 @@ class FavoriteFilmsViewModel @Inject constructor(
     }
 
     fun searchFilm(searchQuery: String) {
-
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(1_000)
+            val flow = searchFavoriteFilmUseCase.execute(searchQuery)
+            withContext(Dispatchers.Main) {
+                flow.collect {
+                    val films: List<FavoriteFilmUi> = FavoriteFilmsDomainToUiMapper.map(it)
+                    _stateFlow.value = FavoriteScreenState.DataLoaded(films)
+                }
+            }
+        }
     }
 
     private fun getListOfFilms() {

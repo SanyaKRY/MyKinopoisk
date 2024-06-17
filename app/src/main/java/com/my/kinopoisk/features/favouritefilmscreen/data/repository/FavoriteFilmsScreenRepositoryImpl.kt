@@ -17,4 +17,10 @@ class FavoriteFilmsScreenRepositoryImpl @Inject constructor(
             FavoriteFilmDataBaseToDomainMapper.map(result)
         }
     }
+
+    override fun searchFavoriteFilm(searchQuery: String): Flow<List<FavoriteFilmDomain>> {
+        return favoriteFilmDataBaseDataSource.searchFavoriteFilm(searchQuery).map { result ->
+            FavoriteFilmDataBaseToDomainMapper.map(result)
+        }
+    }
 }

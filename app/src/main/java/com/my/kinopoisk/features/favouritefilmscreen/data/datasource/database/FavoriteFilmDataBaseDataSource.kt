@@ -20,4 +20,8 @@ class FavoriteFilmDataBaseDataSource @Inject constructor(
     fun getAllFavoriteFilmFlow(): Flow<List<FavoriteFilmTable>> {
         return favoriteFilmDao.getAllFavoriteFilmFlow()
     }
+
+    fun searchFavoriteFilm(searchQuery: String): Flow<List<FavoriteFilmTable>> {
+        return favoriteFilmDao.searchFavoriteFilmByNameFlow(searchQuery)
+    }
 }

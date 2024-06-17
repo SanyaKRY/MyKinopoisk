@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.my.kinopoisk.features.mainscreen.domain.usecase.AddToFilmFavoriteUseCase
 import com.my.kinopoisk.features.mainscreen.domain.usecase.GetListOfFilmsUseCase
 import com.my.kinopoisk.features.mainscreen.domain.usecase.RemoveFromFilmFavoriteUseCase
+import com.my.kinopoisk.features.mainscreen.domain.usecase.SearchFilmUseCase
 import com.my.kinopoisk.features.mainscreen.presenter.mapper.FilmDomainToUiMapper
 import com.my.kinopoisk.features.mainscreen.presenter.mapper.FilmUiToDomainMapper
 import com.my.kinopoisk.features.mainscreen.presenter.model.FilmUi
@@ -23,7 +24,8 @@ import javax.inject.Inject
 class MainScreenViewModel @Inject constructor(
     private val getListOfFilmsUseCase: GetListOfFilmsUseCase,
     private val addToFilmFavoriteUseCase: AddToFilmFavoriteUseCase,
-    private val removeFromFilmFavoriteUseCase: RemoveFromFilmFavoriteUseCase
+    private val removeFromFilmFavoriteUseCase: RemoveFromFilmFavoriteUseCase,
+    private val searchFilmUseCase: SearchFilmUseCase
 ) : ViewModel() {
 
     private val _stateFlow: MutableStateFlow<MainScreenState> =
