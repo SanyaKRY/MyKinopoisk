@@ -96,9 +96,8 @@ class MainScreenFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    fun searchFilm(query: String) {
-        val searchQuery = "%$query%"
-        viewModel.searchFilm(searchQuery)
+    fun searchFilm(searchQuery: String) {
+        viewModel.onSearchChanged(searchQuery)
     }
 
     private fun setUpRecyclerView() {
