@@ -9,9 +9,10 @@ import retrofit2.http.Query
 interface FilmsApiService {
 
     @Headers("X-API-KEY: ${BuildConfig.X_API_KEY}")
-    @GET("/api/v2.2/films/top")
+    @GET("/api/v2.2/films/collections")
     suspend fun getListOfFilms(
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("type") type: String = "TOP_250_MOVIES"
     ): FilmsApi
 
     @Headers("X-API-KEY: ${BuildConfig.X_API_KEY}")

@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.my.kinopoisk.R
 import com.my.kinopoisk.databinding.FragmentMainScreenBinding
+import com.my.kinopoisk.features.mainscreen.data.paging.FilmLoadStateAdapter
 import com.my.kinopoisk.features.mainscreen.presenter.model.FilmUi
 import com.my.kinopoisk.features.mainscreen.presenter.model.MainScreenState
 import com.my.kinopoisk.features.mainscreen.presenter.ui.recyclerview.FilmAdapter
@@ -62,6 +63,7 @@ class MainScreenFragment : Fragment() {
         setUpRecyclerView()
         observerFlow()
         setUpToolBar()
+        setLoadStateListener()
     }
 
     private fun setUpToolBar() {
@@ -100,11 +102,15 @@ class MainScreenFragment : Fragment() {
         viewModel.onSearchChanged(searchQuery)
     }
 
+    private fun setLoadStateListener() {
+
+    }
+
     private fun setUpRecyclerView() {
         filmAdapter = FilmAdapter(insertDeleteFilmListener)
         recyclerView = binding.recyclerView
         recyclerView.apply {
-            adapter = filmAdapter
+            adapter = filmAdapter.withLoadStateFooter(footer = FilmLoadStateAdapter())
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
@@ -112,15 +118,19 @@ class MainScreenFragment : Fragment() {
     private fun observerFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.stateFlow.collect { state: MainScreenState ->
-                    when(state) {
-                        is MainScreenState.Initial -> {}
-                        is MainScreenState.Loading -> {}
-                        is MainScreenState.Error -> {}
-                        is MainScreenState.Dataloaded -> {
-                            filmAdapter.submitList(state.items)
-                        }
-                    }
+//                viewModel.stateFlow.collect { state: MainScreenState ->
+//                    when(state) {
+//                        is MainScreenState.Initial -> {}
+//                        is MainScreenState.Loading -> {}
+//                        is MainScreenState.Error -> {}
+//                        is MainScreenState.Dataloaded -> {
+//                            filmAdapter.submitData(state.items)
+//                        }
+//                    }
+//                }
+
+                viewModel.pagingFlow.collect {
+                    filmAdapter.submitData(it)
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.my.kinopoisk.features.mainscreen.presenter.ui.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.my.kinopoisk.databinding.FilmItemBinding
@@ -11,7 +12,7 @@ class FilmAdapter constructor(
     private val insertDeleteFilmListener: (
         filmUi: FilmUi
     ) -> Unit
-) : ListAdapter<FilmUi, ViewHolderFilm>(
+) : PagingDataAdapter<FilmUi, ViewHolderFilm>(
     FilmDiffCallback()
 ) {
 
@@ -24,19 +25,23 @@ class FilmAdapter constructor(
     }
 
     override fun onBindViewHolder(holder: ViewHolderFilm, position: Int) {
-        holder.apply {
-            val current: FilmUi = getItem(position)
-            bind(current)
+        getItem(position)?.let {
+            holder.bind(it)
         }
+//        holder.apply {
+//            val current: FilmUi = getItem(position)
+//            bind(current)
+//        }
     }
 
     private fun setItemListener(viewHolderFilm: ViewHolderFilm) {
         viewHolderFilm.itemView.setOnLongClickListener {
             val position = viewHolderFilm.bindingAdapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                insertDeleteFilmListener.invoke(getItem(position))
-                getItem(position).apply {
-                    isSavedToDataBase = !isSavedToDataBase
+//                insertDeleteFilmListener.invoke(getItem(position))
+                getItem(position)?.let {
+                    insertDeleteFilmListener.invoke(it)
+                    it.isSavedToDataBase = !it.isSavedToDataBase
                 }
             }
             true

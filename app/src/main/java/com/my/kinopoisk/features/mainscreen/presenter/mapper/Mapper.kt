@@ -3,7 +3,7 @@ package com.my.kinopoisk.features.mainscreen.presenter.mapper
 import com.my.kinopoisk.features.mainscreen.domain.model.FilmDomain
 import com.my.kinopoisk.features.mainscreen.presenter.model.FilmUi
 
-object FilmDomainToUiMapper {
+object FilmsDomainToUiMapper {
     fun map(type: List<FilmDomain>): List<FilmUi> {
         return type.map {
             FilmUi(
@@ -17,6 +17,21 @@ object FilmDomainToUiMapper {
                 isSavedToDataBase = it.isSavedToDataBase
             )
         }
+    }
+}
+
+object FilmDomainToUiMapper {
+    fun map(type: FilmDomain): FilmUi {
+        return FilmUi(
+                filmId = type.filmId,
+                year = type.year,
+                nameRu = type.nameRu,
+                posterUrl = type.posterUrlPreview,
+                posterUrlPreview = type.posterUrlPreview,
+                genres = type.genres,
+                countries = type.countries,
+                isSavedToDataBase = type.isSavedToDataBase
+            )
     }
 }
 

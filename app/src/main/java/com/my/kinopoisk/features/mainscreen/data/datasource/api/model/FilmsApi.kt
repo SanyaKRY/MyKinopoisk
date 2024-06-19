@@ -5,12 +5,12 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class FilmsApi(
-    @Json(name = "films") val films: List<FilmApi>
+    @Json(name = "items") val films: List<FilmApi>
 )
 
 @JsonClass(generateAdapter = true)
 data class FilmApi(
-    @Json(name = "filmId") val filmId: Int,
+    @Json(name = "kinopoiskId") val filmId: Int,
     @Json(name = "year") val year: String,
     @Json(name = "nameRu") val nameRu: String,
     @Json(name = "posterUrl") val posterUrl: String,

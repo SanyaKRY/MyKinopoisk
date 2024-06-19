@@ -2,6 +2,7 @@ package com.my.kinopoisk.features.mainscreen.data.datasource.api
 
 import com.my.kinopoisk.features.mainscreen.data.datasource.api.model.FilmsApi
 import com.my.kinopoisk.features.mainscreen.data.datasource.api.retrofit.FilmsApiService
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class FilmsNetworkDataSource @Inject constructor(
@@ -9,6 +10,7 @@ class FilmsNetworkDataSource @Inject constructor(
 ) {
 
     suspend fun getListOfFilms(page: Int): FilmsApi {
+        delay(20_000)
         return filmsApiService.getListOfFilms(page)
     }
 
