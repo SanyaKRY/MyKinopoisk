@@ -100,17 +100,35 @@ class MainScreenViewModel @Inject constructor(
 
     private fun getListOfFilms() {
         viewModelScope.launch(Dispatchers.IO) {
-            val flow: Flow<PagingData<FilmUi>> = getListOfFilmsUseCase
-                .execute()
-                .map { pagingData ->
-                    pagingData.map {
-                        FilmDomainToUiMapper.map(it)
-                    }
+            val flow: Flow<PagingData<FilmUi>> = getListOfFilmsUseCase.execute().map { pagingData ->
+                pagingData.map {
+                    FilmDomainToUiMapper.map(it)
                 }
-                .cachedIn(viewModelScope)
+            }.cachedIn(viewModelScope)
             flow.collect {
-                _pagingFlow.value = it
+                _stateFlow.value = MainScreenState.Dataloaded(it)
             }
+//                .onEach { pagingData ->
+//                    _stateFlow.value = MainScreenState.Dataloaded(pagingData.map {
+//                        FilmDomainToUiMapper.map(it)
+//                    })
+//                }.catch {
+//                    _stateFlow.value = MainScreenState.Error
+//                }
+//                .collect()
+//                .cachedIn(viewModelScope)
+
+//            val flow: Flow<PagingData<FilmUi>> = getListOfFilmsUseCase
+//                .execute()
+//                .map { pagingData ->
+//                    pagingData.map {
+//                        FilmDomainToUiMapper.map(it)
+//                    }
+//                }
+//                .cachedIn(viewModelScope)
+//            flow.collect {
+//                _pagingFlow.value = it
+//            }
 
 //            withContext(Dispatchers.Main) {
 //                flow.map {

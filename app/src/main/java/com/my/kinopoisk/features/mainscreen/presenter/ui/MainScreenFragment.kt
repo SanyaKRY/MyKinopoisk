@@ -118,20 +118,20 @@ class MainScreenFragment : Fragment() {
     private fun observerFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.stateFlow.collect { state: MainScreenState ->
-//                    when(state) {
-//                        is MainScreenState.Initial -> {}
-//                        is MainScreenState.Loading -> {}
-//                        is MainScreenState.Error -> {}
-//                        is MainScreenState.Dataloaded -> {
-//                            filmAdapter.submitData(state.items)
-//                        }
-//                    }
-//                }
-
-                viewModel.pagingFlow.collect {
-                    filmAdapter.submitData(it)
+                viewModel.stateFlow.collect { state: MainScreenState ->
+                    when(state) {
+                        is MainScreenState.Initial -> {}
+                        is MainScreenState.Loading -> {}
+                        is MainScreenState.Error -> {}
+                        is MainScreenState.Dataloaded -> {
+                            filmAdapter.submitData(state.items)
+                        }
+                    }
                 }
+
+//                viewModel.pagingFlow.collect {
+//                    filmAdapter.submitData(it)
+//                }
             }
         }
     }
