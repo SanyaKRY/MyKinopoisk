@@ -1,9 +1,11 @@
 package com.my.kinopoisk.features.mainscreen.presenter.vm
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.log
 import androidx.paging.map
 import com.my.kinopoisk.features.mainscreen.domain.model.FilmDomain
 import com.my.kinopoisk.features.mainscreen.domain.usecase.AddToFilmFavoriteUseCase
@@ -18,13 +20,23 @@ import com.my.kinopoisk.features.mainscreen.presenter.model.MainScreenState
 import com.my.kinopoisk.util.extensions.runCatchingNonCancellation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -42,23 +54,25 @@ class MainScreenViewModel @Inject constructor(
         MutableStateFlow(MainScreenState.Initial)
     val stateFlow: Flow<MainScreenState>
         get() = _stateFlow
+    val searchQueryPublisher = MutableSharedFlow<String>(extraBufferCapacity = 1)
 
-    private val _pagingFlow: MutableStateFlow<PagingData<FilmUi>> =
-        MutableStateFlow(PagingData.empty())
-    val pagingFlow: Flow<PagingData<FilmUi>>
-        get() = _pagingFlow
+//    private val _pagingFlow: MutableStateFlow<PagingData<FilmUi>> =
+//        MutableStateFlow(PagingData.empty())
+//    val pagingFlow: Flow<PagingData<FilmUi>>
+//        get() = _pagingFlow
 
     init {
         getListOfFilms()
+        listenToSearchQuery()
     }
 
-    fun onSearchChanged(searchQuery: String) {
-        if (searchQuery.isNotEmpty()) {
-            searchFilm(searchQuery)
-        } else {
-            getListOfFilms()
-        }
-    }
+//    fun onSearchChanged(searchQuery: String) {
+//        if (searchQuery.isNotEmpty()) {
+//            searchFilm(searchQuery)
+//        } else {
+//            getListOfFilms()
+//        }
+//    }
 
     fun addToFavoriteFilm(film: FilmUi) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -78,7 +92,33 @@ class MainScreenViewModel @Inject constructor(
     }
 
 
-    private fun searchFilm(searchQuery: String) {
+    private fun listenToSearchQuery() {
+        searchQueryPublisher
+            .filter { it.isNotEmpty() }
+            .distinctUntilChanged()
+            .debounce(500)
+            .mapLatest {
+                _stateFlow.value = MainScreenState.Loading
+                val s = searchFilm(it)
+                Log.d("sdfsagdsagdsfsdsfgsf","DFG: $s")
+                s
+            }
+            .flowOn(Dispatchers.Default)
+            .onEach {
+                Log.d("sdfsagdsagddsfsdsfgsf","DFG: $it")
+                _stateFlow.value = it
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private suspend fun searchFilm(searchQuery: String): MainScreenState {
+        val a = runCatchingNonCancellation {
+            searchFilmUseCase.execute(searchQuery)
+        }.map {
+            MainScreenState.Dataloaded(PagingData.from(FilmsDomainToUiMapper.map(it)))
+        }.getOrDefault(MainScreenState.Error)
+        Log.d("dzfsdfsdfs","DD: $a")
+        return a
 //        viewModelScope.launch(Dispatchers.IO) {
 //            _stateFlow.value = MainScreenState.Loading
 //            delay(1_000)

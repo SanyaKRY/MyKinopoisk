@@ -8,6 +8,7 @@ import com.my.kinopoisk.features.favouritefilmscreen.data.repository.mapper.Film
 import com.my.kinopoisk.features.mainscreen.data.datasource.api.FilmsNetworkDataSource
 import com.my.kinopoisk.features.mainscreen.data.paging.FilmPagingSource
 import com.my.kinopoisk.features.mainscreen.data.repository.mapper.FilmApiToDomainMapper
+import com.my.kinopoisk.features.mainscreen.data.repository.mapper.SearchFilmApiToDomainMapper
 import com.my.kinopoisk.features.mainscreen.domain.repository.MainScreenRepository
 import com.my.kinopoisk.features.mainscreen.domain.model.FilmDomain
 import kotlinx.coroutines.flow.Flow
@@ -39,6 +40,6 @@ class MainScreenRepositoryImpl @Inject constructor(
     }
 
     override suspend fun searchFilm(searchQuery: String): List<FilmDomain> {
-        return FilmApiToDomainMapper.map(filmsNetworkDataSource.searchFilmByKey(searchQuery).films)
+        return SearchFilmApiToDomainMapper.map(filmsNetworkDataSource.searchFilmByKey(searchQuery).films)
     }
 }

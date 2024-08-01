@@ -99,7 +99,7 @@ class MainScreenFragment : Fragment() {
     }
 
     fun searchFilm(searchQuery: String) {
-        viewModel.onSearchChanged(searchQuery)
+        viewModel.searchQueryPublisher.tryEmit(searchQuery)
     }
 
     private fun setLoadStateListener() {
@@ -119,6 +119,7 @@ class MainScreenFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state: MainScreenState ->
+                    Log.d("sdfsagdsagsfgsf","DFG: $state")
                     when(state) {
                         is MainScreenState.Initial -> {}
                         is MainScreenState.Loading -> {}
